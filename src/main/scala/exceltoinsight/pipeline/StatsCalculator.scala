@@ -1,11 +1,12 @@
 package exceltoinsight.pipeline
 
 import exceltoinsight.models.{Entry, SalesOfficer}
+import java.util.Date
 
 class StatsCalculator(profitsData: List[Entry], salesOfficersData: List[SalesOfficer]) {
 
-  private def calculateAverageProfitDouble(profitMap: Map[String, Double]): Double = profitMap.values.sum / profitMap.size
-  private def calculateAverageSalesInt(salesMap: Map[String, Int]): Double = salesMap.values.sum / salesMap.size
+  private def calculateAverageProfitDouble(profitMap: Map[?, Double]): Double = profitMap.values.sum / profitMap.size
+  private def calculateAverageSalesInt(salesMap: Map[Date, Int]): Double = salesMap.values.sum.toDouble / salesMap.size
   def getNetProfit: Double = DataTransformer.getNetProfit(profitsData)
   def calculateAverageProfitPerProduct: Double = {
     val profitsProductsMap = DataTransformer.getProfitsProductsMap(profitsData)
@@ -17,7 +18,7 @@ class StatsCalculator(profitsData: List[Entry], salesOfficersData: List[SalesOff
     if(profitsDaysMap.isEmpty) 0.0
     else calculateAverageProfitDouble(profitsDaysMap)
   }
-  def calculateAverageProfitPerDay: Map[String, Double] = {
+  def calculateAverageProfitPerDay: Map[Date, Double] = {
     profitsData.groupBy(_.date).map{
       case (date, entries) => date -> entries.map(_.profit).sum
     }

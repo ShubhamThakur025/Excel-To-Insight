@@ -1,8 +1,10 @@
 package exceltoinsight.pipeline
 
 import exceltoinsight.models.{Entry, SalesOfficer}
-
+import java.util
+import java.util.Date
 import scala.collection.immutable
+import scala.collection.immutable.TreeMap
 
 object DataTransformer {
 
@@ -20,21 +22,22 @@ object DataTransformer {
       case (product, entries) => product -> entries.map(_.profit).sum
     }
   }
-  def getProfitsDaysMap(profitsData: List[Entry]): Map[String, Double] = {
+  def getProfitsDaysMap(profitsData: List[Entry]): Map[Date, Double] = {
     profitsData.groupBy(_.date).map{
       case (date, entries) => date -> entries.map(_.profit).sum
     }
   }
   def getNetProfit(profitsData: List[Entry]): Double = profitsData.map(_.profit).sum
 
-  def getDayWiseSalesFrequency(profitsData: List[Entry]): Map[String, Int] = {
-    profitsData.groupBy(_.date).map{
-      case (date, entries) => date -> entries.size
+  def getDayWiseSalesFrequency(profitsData: List[Entry]): TreeMap[Date, Int] = {
+    val data = profitsData.groupBy(_.date).map{
+      case (date, entries) => date -> entries.length
     }
+    TreeMap(data.toSeq: _*)
   }
   def getClientWiseSalesFrequency(profitsData: List[Entry]): Map[String, Int] = {
     profitsData.groupBy(_.client).map {
-      case (client, entries) => client -> entries.size
+      case (client, entries) => client -> entries.length
     }
   }
   def getClientWiseProfit(profitsData: List[Entry]): Map[String, Double] = {
@@ -63,7 +66,7 @@ object DataTransformer {
   def getRegionSalesFrequency(profitsData: List[Entry], salesOfficerData: List[SalesOfficer]): Map[String, Int] = {
     val salesOfficerMap = getSalesOfficerMap(salesOfficerData)
     profitsData.groupBy(_.region).map {
-      case (region, entries) => region -> entries.size
+      case (region, entries) => region -> entries.length
     }
   }
 }

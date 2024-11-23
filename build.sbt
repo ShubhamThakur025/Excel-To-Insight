@@ -10,5 +10,6 @@ lazy val root = (project in file("."))
 libraryDependencies ++= Seq(
   "org.apache.poi" % "poi" % "5.3.0",
   "org.apache.poi" % "poi-ooxml" % "5.3.0",
-  "org.apache.poi" % "poi-ooxml-lite" % "5.3.0"
+  "org.apache.poi" % "poi-ooxml-lite" % "5.3.0",
+  "org.knowm.xchart" % "xchart" % "3.8.8"
 )
