@@ -23,10 +23,26 @@ object ChartBuilder {
     barChart
   }
 
+  def barChartBuilderDouble(title: String, xAxisTitle: String, yAxisTitle: String, seriesMap: Map[String, Double]): CategoryChart = {
+    val barChart = new CategoryChartBuilder().title(title).width(1500).height(600).xAxisTitle(xAxisTitle).yAxisTitle(yAxisTitle).build()
+    val xData = seriesMap.keys.toList.asJava
+    val yData = seriesMap.values.map(double2Double).toList.asJava
+    barChart.addSeries(title, xData, yData)
+    barChart
+  }
+
   def lineChartBuilder(title: String, xAxisTitle: String, yAxisTitle: String, seriesMap: TreeMap[Date, Int]): XYChart = {
     val lineChart = new XYChartBuilder().title(title).xAxisTitle(xAxisTitle).yAxisTitle(yAxisTitle).build()
     val xData = seriesMap.keys.toList.asJava
     val yData = seriesMap.values.map(Integer.valueOf).toList.asJava
+    lineChart.addSeries(title, xData, yData)
+    lineChart
+  }
+
+  def lineChartBuilderDoubleYAxis(title: String, xAxisTitle: String, yAxisTitle: String, seriesMap: TreeMap[Date, Double]): XYChart = {
+    val lineChart = new XYChartBuilder().title(title).xAxisTitle(xAxisTitle).yAxisTitle(yAxisTitle).build()
+    val xData = seriesMap.keys.toList.asJava
+    val yData = seriesMap.values.map(double2Double).toList.asJava
     lineChart.addSeries(title, xData, yData)
     lineChart
   }

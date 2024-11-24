@@ -1,7 +1,9 @@
 package exceltoinsight.pipeline
 
 import exceltoinsight.models.{Entry, SalesOfficer}
+
 import java.util.Date
+import scala.collection.immutable.TreeMap
 
 class StatsCalculator(profitsData: List[Entry], salesOfficersData: List[SalesOfficer]) {
 
@@ -18,10 +20,11 @@ class StatsCalculator(profitsData: List[Entry], salesOfficersData: List[SalesOff
     if(profitsDaysMap.isEmpty) 0.0
     else calculateAverageProfitDouble(profitsDaysMap)
   }
-  def calculateAverageProfitPerDay: Map[Date, Double] = {
-    profitsData.groupBy(_.date).map{
+  def calculateAverageProfitPerDay: TreeMap[Date, Double] = {
+    val data = profitsData.groupBy(_.date).map{
       case (date, entries) => date -> entries.map(_.profit).sum
     }
+    TreeMap(data.toSeq: _*)
   }
   def calculateAverageSalesPerDay: Double = {
     val salesDayMap = DataTransformer.getDayWiseSalesFrequency(profitsData)

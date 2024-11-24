@@ -17,7 +17,7 @@ object DataTransformer {
       case (product, entries) => product -> entries.map(_.profit).sum
     }
   }
-  def getCategoriesProductsMap(profitsData: List[Entry]): Map[String, Double] = {
+  def getProfitsCategoriesMap(profitsData: List[Entry]): Map[String, Double] = {
     profitsData.groupBy(_.category).map {
       case (product, entries) => product -> entries.map(_.profit).sum
     }
